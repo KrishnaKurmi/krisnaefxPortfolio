@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Navigation, Footer } from "@/components/common";
 import { Container } from "@/components/layout";
+import { ShaderAnimation } from "@/components/media/ShaderAnimation";
 import { projects, Project } from "@/data/projects";
 import { silenceAllMedia } from "@/utils/mediaCoordinator";
 import styles from "./gallery.module.css";
@@ -152,15 +153,21 @@ export default function GalleryPage() {
     <>
       <Navigation />
       <main className={styles.galleryPage}>
-        {/* Header Strip */}
+        {/* Header Strip with 21st.dev Shader Animation */}
         <section className={styles.galleryHero}>
+          {/* Real-time 21st.dev WebGL Kinetic Shader Lines Backdrop */}
+          <div className={styles.shaderBackdrop}>
+            <ShaderAnimation />
+          </div>
+          <div className={styles.shaderVignette} />
+
           <Container>
             <div className={styles.heroContent}>
               <div className={styles.kickerRow}>
                 <span className={styles.kicker}>ARCHIVE VAULT</span>
                 <span className={styles.countPill}>{filteredProjects.length} TITLES</span>
               </div>
-              <h1 className={styles.title}>FILM & MOTION DIRECTORY</h1>
+              <h1 className={styles.title}>FILM &amp; MOTION DIRECTORY</h1>
               <p className={styles.subtitle}>
                 Complete archive of client commercials, narrative color grades, typography animations,
                 and technical VFX sequences.
@@ -182,7 +189,7 @@ export default function GalleryPage() {
                   ))}
                 </div>
 
-                {/* View Mode Toggle */}
+                {/* View Actions Group */}
                 <div className={styles.viewToggleGroup}>
                   <button
                     type="button"

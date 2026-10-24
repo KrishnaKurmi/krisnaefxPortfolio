@@ -1,0 +1,143 @@
+.footer {
+  background-color: #07080a;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 80px 0 40px 0;
+}
+
+.topRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  max-width: 440px;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.logoMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--color-accent), #9b7245);
+  color: #0a0b0d;
+  font-family: var(--font-mono);
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.brandTitle {
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+}
+
+.brandBio {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(245, 245, 240, 0.6);
+}
+
+.colHeader {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerLink {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(245, 245, 240, 0.65);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.footerLink:hover {
+  color: #ffffff;
+  padding-left: 4px;
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 36px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.copyright {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(245, 245, 240, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dotSep {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.credits {
+  color: var(--color-accent);
+}
+
+.backToTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: rgba(245, 245, 240, 0.6);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.backToTop:hover {
+  color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 860px) {
+  .topRow {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

@@ -1,0 +1,172 @@
+.videoCard {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  transition: all var(--duration-short) var(--easing-out);
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.videoCard:hover {
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.5);
+  transform: translateY(-4px);
+}
+
+/* Video Container */
+.videoContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Play Overlay */
+.playOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity var(--duration-short) var(--easing-out);
+  pointer-events: none;
+}
+
+.playOverlay.visible {
+  opacity: 1;
+}
+
+.playIcon {
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-bg);
+  transition: transform var(--duration-short) var(--easing-out);
+}
+
+.playOverlay.visible .playIcon {
+  transform: scale(1.1);
+}
+
+.playIcon svg {
+  width: 28px;
+  height: 28px;
+  margin-left: 4px;
+}
+
+/* Category Badge */
+.categoryBadge {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background-color: rgba(15, 15, 15, 0.8);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+  text-transform: capitalize;
+}
+
+/* Content Overlay */
+.content {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--spacing-lg);
+  opacity: 0;
+  transition: opacity var(--duration-short) var(--easing-out);
+  pointer-events: none;
+}
+
+.content.visible {
+  opacity: 1;
+}
+
+.title {
+  font-size: var(--fs-h4);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+  line-height: 1.2;
+}
+
+/* Category Variants */
+.energetic {
+  --category-color: #ff6b35;
+}
+
+.cinematic {
+  --category-color: #d4a574;
+}
+
+.typography {
+  --category-color: #e8c4a0;
+}
+
+.commercial {
+  --category-color: #6ba587;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .videoCard {
+    aspect-ratio: 16 / 9;
+  }
+
+  .playIcon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .playIcon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .categoryBadge {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    padding: 4px 8px;
+  }
+
+  .content {
+    padding: var(--spacing-md);
+  }
+}
+
+/* Touch devices - always show content */
+@media (hover: none) {
+  .playOverlay,
+  .content {
+    opacity: 1;
+  }
+
+  .playOverlay {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}

@@ -1,69 +1,112 @@
-import Image from "next/image";
+import { Navigation, Footer } from "@/components/common";
+import { Hero } from "@/components/sections/Hero";
+import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
+import { Section, Container } from "@/components/layout";
+import styles from "./page.module.css";
 
 export default function Home() {
+  const specializations = [
+    { title: "High-Energy Commercials", desc: "Pacing dialed to music beats with snappy cuts and kinetic flow." },
+    { title: "VFX & Compositing", desc: "Seamless screen replacements, 2D/3D tracking, and atmospheric cleanups." },
+    { title: "Kinetic Typography", desc: "Custom brand titles, motion graphics, and animated subtitles." },
+    { title: "DaVinci Color Grading", desc: "Moody film-emulation color palettes crafted for emotional depth." },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <Navigation />
+      <main className={styles.main}>
+        <Hero />
+        <FeaturedProjects />
+
+        {/* About Section */}
+        <Section id="about" spacing="2xl" className={styles.aboutSection}>
+          <Container>
+            <div className={styles.aboutGrid}>
+              {/* Left Column: Big Statement */}
+              <div className={styles.aboutLeft}>
+                <span className={styles.kicker}>THE PHILOSOPHY</span>
+                <h2 className={styles.manifesto}>
+                  "EVERY FRAME IS A DELIBERATE CHOICE. NO ACCIDENTS. NO TEMPLATES."
+                </h2>
+
+                <div className={styles.statsGrid}>
+                  <div className={styles.statItem}>
+                    <span className={styles.statNum}>14+</span>
+                    <span className={styles.statLabel}>Completed Works</span>
+                  </div>
+                  <div className={styles.statItem}>
+                    <span className={styles.statNum}>4K</span>
+                    <span className={styles.statLabel}>Master Delivery</span>
+                  </div>
+                  <div className={styles.statItem}>
+                    <span className={styles.statNum}>100%</span>
+                    <span className={styles.statLabel}>Custom Crafted</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Bio & Specializations */}
+              <div className={styles.aboutRight}>
+                <p className={styles.bioLead}>
+                  I'm a filmmaker and motion designer focused on cinematic editing, VFX,
+                  and precision color grading. I build work that feels intentional, moody,
+                  and technically polished for creators, brands, and production studios.
+                </p>
+
+                <div className={styles.specsList}>
+                  {specializations.map((spec, i) => (
+                    <div key={i} className={styles.specCard}>
+                      <span className={styles.specIndex}>0{i + 1}</span>
+                      <div>
+                        <h4 className={styles.specTitle}>{spec.title}</h4>
+                        <p className={styles.specDesc}>{spec.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Container>
+        </Section>
+
+        {/* Contact CTA Section */}
+        <Section id="contact" spacing="2xl" className={styles.contactSection}>
+          <Container>
+            <div className={styles.contactCard}>
+              <div className={styles.contactGlow} />
+              <div className={styles.contactContent}>
+                <span className={styles.contactKicker}>START A COLLABORATION</span>
+                <h2 className={styles.contactTitle}>
+                  LET'S CREATE SOMETHING UNFORGETTABLE.
+                </h2>
+                <p className={styles.contactSub}>
+                  Whether you need a dynamic commercial edit, kinetic typography, or full-scale
+                  cinematic post-production, let's talk timeline and vision.
+                </p>
+
+                <div className={styles.contactActions}>
+                  <a href="mailto:contact@krishnakushwaha.com" className={styles.primaryContactBtn}>
+                    <span>GET IN TOUCH DIRECTLY</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M7 17L17 7M17 7H7M17 7V17" />
+                    </svg>
+                  </a>
+                  <a href="https://instagram.com/krisnaefx" target="_blank" rel="noopener noreferrer" className={styles.secondaryContactBtn}>
+                    <span>DM ON INSTAGRAM</span>
+                  </a>
+                </div>
+
+                <div className={styles.availabilityNotice}>
+                  <span className={styles.statusDot} />
+                  <span>Currently booking projects for upcoming quarters</span>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </Section>
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }

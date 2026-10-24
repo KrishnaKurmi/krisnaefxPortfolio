@@ -27,7 +27,7 @@ export default function Home() {
               <div className={styles.aboutLeft}>
                 <span className={styles.kicker}>THE PHILOSOPHY</span>
                 <h2 className={styles.manifesto}>
-                  "EVERY FRAME IS A DELIBERATE CHOICE. NO ACCIDENTS. NO TEMPLATES."
+                  &ldquo;EVERY FRAME IS A DELIBERATE CHOICE. NO ACCIDENTS. NO TEMPLATES.&rdquo;
                 </h2>
 
                 <div className={styles.statsGrid}>
@@ -49,7 +49,7 @@ export default function Home() {
               {/* Right Column: Bio & Specializations */}
               <div className={styles.aboutRight}>
                 <p className={styles.bioLead}>
-                  I'm a filmmaker and motion designer focused on cinematic editing, VFX,
+                  I&apos;m a filmmaker and motion designer focused on cinematic editing, VFX,
                   and precision color grading. I build work that feels intentional, moody,
                   and technically polished for creators, brands, and production studios.
                 </p>
@@ -78,11 +78,11 @@ export default function Home() {
               <div className={styles.contactContent}>
                 <span className={styles.contactKicker}>START A COLLABORATION</span>
                 <h2 className={styles.contactTitle}>
-                  LET'S CREATE SOMETHING UNFORGETTABLE.
+                  LET&apos;S CREATE SOMETHING UNFORGETTABLE.
                 </h2>
                 <p className={styles.contactSub}>
                   Whether you need a dynamic commercial edit, kinetic typography, or full-scale
-                  cinematic post-production, let's talk timeline and vision.
+                  cinematic post-production, let&apos;s talk timeline and vision.
                 </p>
 
                 <div className={styles.contactActions}>

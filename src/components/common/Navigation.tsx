@@ -40,19 +40,19 @@ export function Navigation() {
           <ul className={styles.navList}>
             {navItems.map((item) => (
               <li key={item.label}>
-                <a
+                <Link
                   href={item.href}
                   className={styles.navLink}
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
 
-          <a href="/#contact" className={styles.navCta}>
-            <span>LET'S WORK</span>
-          </a>
+          <Link href="/#contact" className={styles.navCta}>
+            <span>LET&apos;S WORK</span>
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -70,24 +70,24 @@ export function Navigation() {
           <ul className={styles.mobileNavList}>
             {navItems.map((item) => (
               <li key={item.label}>
-                <a
+                <Link
                   href={item.href}
                   className={styles.mobileNavLink}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
           <div className={styles.drawerFooter}>
-            <a
+            <Link
               href="/#contact"
               className={styles.drawerCta}
               onClick={() => setIsOpen(false)}
             >
               START A PROJECT
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

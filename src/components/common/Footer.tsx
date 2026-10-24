@@ -1,16 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import styles from "./Footer.module.css";
 import { Container } from "../layout";
 
 export function Footer() {
-  const [currentYear, setCurrentYear] = useState<number>(2025);
-
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -33,10 +27,10 @@ export function Footer() {
           <div className={styles.linksCol}>
             <span className={styles.colHeader}>NAVIGATION</span>
             <ul className={styles.linkList}>
-              <li><a href="/#work" className={styles.footerLink}>Featured Projects</a></li>
-              <li><a href="/gallery" className={styles.footerLink}>Full Archive (14)</a></li>
-              <li><a href="/#about" className={styles.footerLink}>About & Philosophy</a></li>
-              <li><a href="/#contact" className={styles.footerLink}>Contact / Inquiries</a></li>
+              <li><Link href="/#work" className={styles.footerLink}>Featured Projects</Link></li>
+              <li><Link href="/gallery" className={styles.footerLink}>Full Archive (14)</Link></li>
+              <li><Link href="/#about" className={styles.footerLink}>About & Philosophy</Link></li>
+              <li><Link href="/#contact" className={styles.footerLink}>Contact / Inquiries</Link></li>
             </ul>
           </div>
 
@@ -64,7 +58,7 @@ export function Footer() {
 
         <div className={styles.bottomRow}>
           <div className={styles.copyright}>
-            <span>© {currentYear} Krishna Kushwaha. All rights reserved.</span>
+            <span>© 2026 Krishna Kushwaha. All rights reserved.</span>
             <span className={styles.dotSep}>•</span>
             <span className={styles.credits}>CRAFTED FOR CINEMATIC IMPACT</span>
           </div>

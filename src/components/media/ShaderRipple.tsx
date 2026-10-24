@@ -8,7 +8,8 @@ export function ShaderRipple() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -22,7 +23,7 @@ export function ShaderRipple() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    containerRef.current.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     camera.position.z = 5;
 
@@ -92,7 +93,7 @@ export function ShaderRipple() {
 
     // Animation loop
     let animationId: number;
-    let startTime = Date.now();
+    const startTime = Date.now();
     const duration = 2000; // 2 seconds
 
     const animate = () => {
@@ -109,8 +110,8 @@ export function ShaderRipple() {
         // Keep final frame visible briefly
         renderer.render(scene, camera);
         setTimeout(() => {
-          if (containerRef.current && renderer.domElement.parentNode) {
-            containerRef.current.removeChild(renderer.domElement);
+          if (container && renderer.domElement.parentNode) {
+            container.removeChild(renderer.domElement);
           }
         }, 300);
       }
@@ -126,11 +127,11 @@ export function ShaderRipple() {
       material.dispose();
       renderer.dispose();
       if (
-        containerRef.current &&
+        container &&
         renderer.domElement &&
-        renderer.domElement.parentNode === containerRef.current
+        renderer.domElement.parentNode === container
       ) {
-        containerRef.current.removeChild(renderer.domElement);
+        container.removeChild(renderer.domElement);
       }
     };
   }, []);

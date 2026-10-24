@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, ElementType } from "react";
 import styles from "./Container.module.css";
 
 interface ContainerProps {
@@ -12,7 +12,7 @@ export function Container({
   className = "",
   as = "div",
 }: ContainerProps) {
-  const Tag = as as any;
+  const Tag: ElementType = as;
 
   return (
     <Tag className={`${styles.container} ${className}`}>

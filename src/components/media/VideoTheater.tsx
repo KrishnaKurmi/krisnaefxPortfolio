@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import styles from "./VideoTheater.module.css";
 import { requestExclusiveAudio, silenceAllMedia } from "@/utils/mediaCoordinator";
 
@@ -12,8 +12,6 @@ interface VideoTheaterProps {
 
 export function VideoTheater({ videoPath, videoPoster, title }: VideoTheaterProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     // When opening a video detail page, ensure all other background media is silenced immediately!
@@ -28,40 +26,29 @@ export function VideoTheater({ videoPath, videoPoster, title }: VideoTheaterProp
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
-          setIsPlaying(true);
           requestExclusiveAudio(video);
         })
         .catch(() => {
           // If browser policy blocks unmuted autoplay, fall back to muted autoplay
           video.muted = true;
-          setIsMuted(true);
-          video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+          video.play().catch(() => {});
         });
     }
-
-    // Sync state with native events
-    const onPlay = () => setIsPlaying(true);
-    const onPause = () => setIsPlaying(false);
-    video.addEventListener("play", onPlay);
-    video.addEventListener("pause", onPause);
 
     // Stop / pause when window or tab is not focused
     const handleVisibility = () => {
       if (document.hidden) {
         video.pause();
-        setIsPlaying(false);
       }
     };
 
     const handleWindowBlur = () => {
       // Pause video when window loses focus (switched app, alt-tab, etc.)
       video.pause();
-      setIsPlaying(false);
     };
 
     const handleForcedMute = () => {
       video.muted = true;
-      setIsMuted(true);
     };
 
     document.addEventListener("visibilitychange", handleVisibility);
@@ -70,8 +57,6 @@ export function VideoTheater({ videoPath, videoPoster, title }: VideoTheaterProp
 
     return () => {
       // Unmount cleanup: immediately stop and silence video so sound NEVER continues in background!
-      video.removeEventListener("play", onPlay);
-      video.removeEventListener("pause", onPause);
       video.removeEventListener("portfolio:forced-mute", handleForcedMute);
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("blur", handleWindowBlur);

@@ -146,9 +146,9 @@ async function ProjectDetailContent({ params }: ProjectDetailPageProps) {
                   </div>
 
                   <div className={styles.specAction}>
-                    <a href="/#contact" className={styles.inquireBtn}>
+                    <Link href="/#contact" className={styles.inquireBtn}>
                       INQUIRE SIMILAR PROJECT
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </aside>

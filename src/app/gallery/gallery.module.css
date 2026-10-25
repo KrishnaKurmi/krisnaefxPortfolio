@@ -63,6 +63,31 @@
   border-radius: 4px;
 }
 
+.replayIntroBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 3px 10px;
+  color: rgba(245, 245, 240, 0.75);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.replayIntroBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--color-accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+
 .title {
   font-family: var(--font-primary);
   font-size: clamp(32px, 5vw, 60px);

@@ -6,7 +6,7 @@ import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Navigation, Footer } from "@/components/common";
+import { Navigation, Footer, useArchiveTransition } from "@/components/common";
 import { Container } from "@/components/layout";
 import { ShaderAnimation } from "@/components/media/ShaderAnimation";
 import { projects, Project } from "@/data/projects";
@@ -127,9 +127,23 @@ function Scene3D({
 
 export default function GalleryPage() {
   const router = useRouter();
+  const { triggerTransition } = useArchiveTransition();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "3d">("grid");
   const [activeHoverId, setActiveHoverId] = useState<string | null>(null);
+
+  // Trigger full-screen shader intro when directly landing on /gallery for the first time
+  useEffect(() => {
+    try {
+      const hasSeen = sessionStorage.getItem("gallery_shader_intro_seen");
+      if (!hasSeen) {
+        sessionStorage.setItem("gallery_shader_intro_seen", "true");
+        triggerTransition("/gallery");
+      }
+    } catch {
+      // Ignore sessionStorage restrictions if private mode
+    }
+  }, [triggerTransition]);
 
   const categories = [
     { id: "all", label: "ALL FILMS (14)" },
@@ -157,7 +171,7 @@ export default function GalleryPage() {
         <section className={styles.galleryHero}>
           {/* Real-time 21st.dev WebGL Kinetic Shader Lines Backdrop */}
           <div className={styles.shaderBackdrop}>
-            <ShaderAnimation />
+            <ShaderAnimation speed={0.05} />
           </div>
           <div className={styles.shaderVignette} />
 
@@ -166,12 +180,33 @@ export default function GalleryPage() {
               <div className={styles.kickerRow}>
                 <span className={styles.kicker}>ARCHIVE VAULT</span>
                 <span className={styles.countPill}>{filteredProjects.length} TITLES</span>
+                <button
+                  type="button"
+                  onClick={() => triggerTransition("/gallery")}
+                  className={styles.replayIntroBtn}
+                  aria-label="Replay 21st.dev shader intro"
+                  title="Replay full-screen 21st.dev kinetic shader intro"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <path d="M23 4v6h-6M1 20v-6h6" />
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                  </svg>
+                  <span>REPLAY SHADER INTRO</span>
+                </button>
               </div>
               <h1 className={styles.title}>FILM &amp; MOTION DIRECTORY</h1>
               <p className={styles.subtitle}>
                 Complete archive of client commercials, narrative color grades, typography animations,
                 and technical VFX sequences.
               </p>
+
 
               {/* Controls bar: Filters & View Switcher */}
               <div className={styles.controlsBar}>

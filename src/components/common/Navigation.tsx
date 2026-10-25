@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
 import { Container } from "../layout";
+import { useArchiveTransition } from "./ArchiveTransitionProvider";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { triggerTransition } = useArchiveTransition();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +45,12 @@ export function Navigation() {
                 <Link
                   href={item.href}
                   className={styles.navLink}
+                  onClick={(e) => {
+                    if (item.href === "/gallery") {
+                      e.preventDefault();
+                      triggerTransition("/gallery");
+                    }
+                  }}
                 >
                   {item.label}
                 </Link>
@@ -73,7 +81,13 @@ export function Navigation() {
                 <Link
                   href={item.href}
                   className={styles.mobileNavLink}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => {
+                    setIsOpen(false);
+                    if (item.href === "/gallery") {
+                      e.preventDefault();
+                      triggerTransition("/gallery");
+                    }
+                  }}
                 >
                   {item.label}
                 </Link>

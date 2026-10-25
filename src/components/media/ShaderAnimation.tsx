@@ -6,123 +6,77 @@ import * as THREE from "three";
 interface ShaderAnimationProps {
   className?: string;
   style?: React.CSSProperties;
+  speed?: number;
 }
 
 /**
- * High-performance WebGL Kinetic Wave Shader
- * Featuring a deep cyan (#00F0FF) & electric blue (#0A58FF) palette
- * with volumetric ribbon harmonics, glowing specular cores, and smooth pointer tracking.
+ * Procedural Kinetic Shader Animation from 21st.dev (@designali-in)
+ * High-performance WebGL fragment shader with dynamic chromatic dispersion rings
+ * and periodic wave distortion.
+ * Reference: https://cdn.21st.dev/designali-in/shader-animation/default/bundle.1755486352920.html
  */
-export function ShaderAnimation({ className, style }: ShaderAnimationProps) {
+export function ShaderAnimation({
+  className,
+  style,
+  speed = 0.05,
+}: ShaderAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<{
+    camera: THREE.Camera;
+    scene: THREE.Scene;
+    renderer: THREE.WebGLRenderer;
+    uniforms: {
+      time: { type: string; value: number };
+      resolution: { type: string; value: THREE.Vector2 };
+    };
+    animationId: number;
+  } | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    // Vertex Shader: full-screen normalized coordinates
+    // Vertex Shader: direct NDC plane mapping
     const vertexShader = `
-      varying vec2 vUv;
       void main() {
-        vUv = uv;
-        gl_Position = vec4(position, 1.0);
+        gl_Position = vec4( position, 1.0 );
       }
     `;
 
-    // Fragment Shader: Multi-octave kinetic fluid waves with deep cyan and electric blue palette
+    // Fragment Shader: 21st.dev procedural kinetic rings with chromatic dispersion
     const fragmentShader = `
+      #define TWO_PI 6.2831853072
+      #define PI 3.14159265359
+
       precision highp float;
       uniform vec2 resolution;
       uniform float time;
-      uniform vec2 mouse;
-      varying vec2 vUv;
-
-      // 2D Rotation matrix
-      mat2 rotate2D(float angle) {
-        float s = sin(angle);
-        float c = cos(angle);
-        return mat2(c, -s, s, c);
-      }
 
       void main(void) {
-        // Normalized device aspect-ratio corrected UVs
         vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-        
-        // Dynamic time parameter
-        float t = time * 0.35;
-        
-        // Gentle coordinate warp reacting to subtle pointer influence
-        vec2 p = uv;
-        vec2 mouseInfluence = (mouse * 2.0 - 1.0) * 0.15;
-        p += mouseInfluence * smoothstep(1.5, 0.0, length(uv - mouseInfluence));
-        
-        // Slow organic rotation
-        p = rotate2D(sin(t * 0.12) * 0.35) * p;
+        float t = time * 0.05;
+        float lineWidth = 0.002;
 
-        // Base atmospheric field: Deepest midnight obsidian
-        float distCenter = length(uv);
-        vec3 col = mix(vec3(0.008, 0.018, 0.045), vec3(0.002, 0.005, 0.012), distCenter * 0.7);
-
-        // Wave harmonic layer synthesis
-        for (float i = 1.0; i <= 7.0; i++) {
-          float freq = i * 1.65;
-          float speed = t * (0.28 + i * 0.06);
-          
-          // Non-linear organic wave displacement
-          float wave = sin(p.x * freq + speed + cos(p.y * 2.6 + t * 0.4)) * 0.26;
-          wave += cos(p.y * (freq * 0.75) - speed * 0.65 + sin(p.x * 1.8)) * 0.16;
-          
-          // Distance from the undulating ribbon center line
-          float lineY = (i - 4.0) * 0.15;
-          float d = abs(p.y - wave * (0.85 / sqrt(i)) - lineY);
-
-          // Volumetric soft glow falloff
-          float glow = 0.016 / (d + 0.016);
-          glow = pow(glow, 1.25);
-
-          // Color palette interpolation: Deep Royal Cobalt (#083EBD) to Electric Cyan (#00F0FF)
-          float colorShift = sin(p.x * 1.8 + t * 0.8 + i * 0.9) * 0.5 + 0.5;
-          vec3 deepBlue = vec3(0.02, 0.22, 0.85);    // Deep sapphire electric blue
-          vec3 radiantCyan = vec3(0.0, 0.94, 1.0);   // Radiant vibrant cyan
-          vec3 waveColor = mix(deepBlue, radiantCyan, colorShift);
-
-          // Concentrated hot specular neon core along the crest
-          float core = 0.0022 / (d + 0.0028);
-          waveColor += vec3(0.9, 0.98, 1.0) * pow(core, 2.0) * 0.75;
-
-          // Additive blend with natural depth attenuation
-          col += waveColor * glow * (1.15 / sqrt(i));
+        vec3 color = vec3(0.0);
+        for(int j = 0; j < 3; j++){
+          for(int i = 0; i < 5; i++){
+            color[j] += lineWidth * float(i * i) / abs(fract(t - 0.01 * float(j) + float(i) * 0.01) * 5.0 - length(uv) + mod(uv.x + uv.y, 0.2));
+          }
         }
-
-        // Secondary subtle diagonal interference ripples for extra texture
-        float ripple = sin((p.x + p.y) * 14.0 + t * 1.5) * 0.5 + 0.5;
-        col += vec3(0.0, 0.35, 0.75) * ripple * 0.04 * (1.0 - smoothstep(0.0, 1.2, distCenter));
-
-        // Soft peripheral vignette
-        col *= 1.0 - smoothstep(1.3, 2.2, distCenter);
-
-        // Film-grade tone mapping (prevents harsh blowouts while keeping neon brilliance)
-        col = col / (1.0 + col * 0.3);
-        col = pow(col, vec3(0.92));
-
-        gl_FragColor = vec4(col, 1.0);
+        
+        gl_FragColor = vec4(color[0], color[1], color[2], 1.0);
       }
     `;
 
-    // Scene & Camera setup
     const camera = new THREE.Camera();
     camera.position.z = 1;
 
     const scene = new THREE.Scene();
     const geometry = new THREE.PlaneGeometry(2, 2);
 
-    const mousePos = new THREE.Vector2(0.5, 0.5);
-    const targetMousePos = new THREE.Vector2(0.5, 0.5);
-
     const uniforms = {
-      time: { value: 0.0 },
-      resolution: { value: new THREE.Vector2() },
-      mouse: { value: mousePos },
+      time: { type: "f", value: 1.0 },
+      resolution: { type: "v2", value: new THREE.Vector2() },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -144,75 +98,90 @@ export function ShaderAnimation({ className, style }: ShaderAnimationProps) {
 
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(pixelRatio);
-    container.appendChild(renderer.domElement);
 
-    // Responsive sizing
-    const onResize = () => {
-      const width = container.clientWidth || window.innerWidth;
-      const height = container.clientHeight || 450;
+    const canvas = renderer.domElement;
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.display = "block";
+    canvas.style.pointerEvents = "none";
+
+    container.appendChild(canvas);
+
+    const onWindowResize = () => {
+      const width = container.clientWidth || window.innerWidth || 800;
+      const height = container.clientHeight || window.innerHeight || 600;
       renderer.setSize(width, height);
-      uniforms.resolution.value.set(width * pixelRatio, height * pixelRatio);
+      uniforms.resolution.value.x = renderer.domElement.width;
+      uniforms.resolution.value.y = renderer.domElement.height;
     };
 
-    onResize();
-    window.addEventListener("resize", onResize);
+    onWindowResize();
+    window.addEventListener("resize", onWindowResize, false);
 
-    // Pointer move interaction
-    const handlePointerMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / (rect.width || 1);
-      const y = (e.clientY - rect.top) / (rect.height || 1);
-      targetMousePos.set(x, 1.0 - y);
-    };
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => {
+        onWindowResize();
+      });
+      resizeObserver.observe(container);
+    }
 
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-
-    // Animation loop with clock
-    const clock = new THREE.Clock();
-    let animationId: number;
     let isRunning = true;
-
     const animate = () => {
       if (!isRunning) return;
-      animationId = requestAnimationFrame(animate);
-
-      // Smooth mouse lerping
-      mousePos.lerp(targetMousePos, 0.05);
-
-      uniforms.time.value = clock.getElapsedTime();
+      const animationId = requestAnimationFrame(animate);
+      uniforms.time.value += speed;
       renderer.render(scene, camera);
+      if (sceneRef.current) {
+        sceneRef.current.animationId = animationId;
+      }
+    };
+
+    sceneRef.current = {
+      camera,
+      scene,
+      renderer,
+      uniforms,
+      animationId: 0,
     };
 
     animate();
 
     return () => {
       isRunning = false;
-      cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("pointermove", handlePointerMove);
-
-      if (renderer.domElement && renderer.domElement.parentNode === container) {
-        container.removeChild(renderer.domElement);
+      window.removeEventListener("resize", onWindowResize);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
       }
-
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
+      if (sceneRef.current) {
+        cancelAnimationFrame(sceneRef.current.animationId);
+        if (container && renderer.domElement && renderer.domElement.parentNode === container) {
+          container.removeChild(renderer.domElement);
+        }
+        renderer.dispose();
+        geometry.dispose();
+        material.dispose();
+        sceneRef.current = null;
+      }
     };
-  }, []);
+  }, [speed]);
 
   return (
     <div
       ref={containerRef}
       className={className}
       style={{
-        position: "absolute",
-        inset: 0,
+        position: "relative",
         width: "100%",
         height: "100%",
+        background: "#000000",
         overflow: "hidden",
         ...style,
       }}
     />
   );
 }
+export default ShaderAnimation;

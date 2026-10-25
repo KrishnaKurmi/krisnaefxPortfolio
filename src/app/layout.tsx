@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import { ArchiveTransitionProvider } from "@/components/common";
+import { ArchiveTransitionProvider, FluidCursor } from "@/components/common";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -53,8 +53,10 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#0f0f0f" />
+        <link rel="preload" as="image" href="/media/brand/nexstudio-cursor.svg" />
       </head>
       <body suppressHydrationWarning>
+        <FluidCursor />
         <ArchiveTransitionProvider>{children}</ArchiveTransitionProvider>
       </body>
     </html>

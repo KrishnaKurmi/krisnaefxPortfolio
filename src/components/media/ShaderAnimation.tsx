@@ -7,6 +7,8 @@ interface ShaderAnimationProps {
   className?: string;
   style?: React.CSSProperties;
   speed?: number;
+  playOnce?: boolean;
+  duration?: number;
 }
 
 /**
@@ -19,6 +21,8 @@ export function ShaderAnimation({
   className,
   style,
   speed = 0.05,
+  playOnce = false,
+  duration = 1800,
 }: ShaderAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
@@ -31,6 +35,7 @@ export function ShaderAnimation({
     };
     animationId: number;
   } | null>(null);
+  const startTimeRef = useRef<number>(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -130,8 +135,20 @@ export function ShaderAnimation({
     }
 
     let isRunning = true;
+    startTimeRef.current = Date.now();
+
     const animate = () => {
       if (!isRunning) return;
+
+      // Check if playOnce duration has elapsed
+      if (playOnce) {
+        const elapsed = Date.now() - startTimeRef.current;
+        if (elapsed > duration) {
+          isRunning = false;
+          return;
+        }
+      }
+
       const animationId = requestAnimationFrame(animate);
       uniforms.time.value += speed;
       renderer.render(scene, camera);
@@ -167,7 +184,7 @@ export function ShaderAnimation({
         sceneRef.current = null;
       }
     };
-  }, [speed]);
+  }, [speed, playOnce, duration]);
 
   return (
     <div

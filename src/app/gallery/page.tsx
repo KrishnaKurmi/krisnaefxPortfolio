@@ -171,7 +171,7 @@ export default function GalleryPage() {
         <section className={styles.galleryHero}>
           {/* Real-time 21st.dev WebGL Kinetic Shader Lines Backdrop */}
           <div className={styles.shaderBackdrop}>
-            <ShaderAnimation speed={0.05} />
+            <ShaderAnimation speed={0.05} playOnce={true} duration={1800} />
           </div>
           <div className={styles.shaderVignette} />
 

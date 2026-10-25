@@ -1,0 +1,101 @@
+/* Cinematic Atmospheric Background System */
+.atmosphericWrap {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  background-color: #07080a;
+}
+
+/* Primary Top Golden-Amber Bloom */
+.glowTop {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110vw;
+  max-width: 1500px;
+  height: 65vh;
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 20%,
+    rgba(212, 165, 116, 0.12) 0%,
+    rgba(212, 165, 116, 0.04) 45%,
+    transparent 75%
+  );
+  filter: blur(50px);
+  will-change: opacity;
+}
+
+/* Secondary Teal/Cobalt Anamorphic Rim Bloom */
+.glowRight {
+  position: absolute;
+  top: 25%;
+  right: -12%;
+  width: 55vw;
+  max-width: 800px;
+  height: 70vh;
+  background: radial-gradient(
+    circle at 80% 50%,
+    rgba(23, 143, 157, 0.055) 0%,
+    rgba(23, 143, 157, 0.015) 50%,
+    transparent 75%
+  );
+  filter: blur(65px);
+}
+
+/* Deep Moody Obsidian/Violet Lower-Left Accent */
+.glowLeft {
+  position: absolute;
+  bottom: 5%;
+  left: -12%;
+  width: 60vw;
+  max-width: 850px;
+  height: 65vh;
+  background: radial-gradient(
+    circle at 20% 70%,
+    rgba(118, 113, 255, 0.035) 0%,
+    rgba(118, 113, 255, 0.008) 50%,
+    transparent 75%
+  );
+  filter: blur(70px);
+}
+
+/* Fine Technical Studio Grid with Radial Mask */
+.studioGrid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 30%, black 20%, transparent 80%);
+  opacity: 0.75;
+}
+
+/* Tactile 35mm Analog Film Grain */
+.filmGrain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+/* Peripheral Cinematic Vignette */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    transparent 50%,
+    rgba(5, 6, 8, 0.5) 80%,
+    rgba(3, 4, 5, 0.9) 100%
+  );
+}

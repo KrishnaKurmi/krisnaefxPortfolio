@@ -5,4 +5,5 @@ export { ArchiveTransition } from "./ArchiveTransition";
 export { ArchiveTransitionProvider, useArchiveTransition } from "./ArchiveTransitionProvider";
 export { ClientRootLayout } from "./ClientRootLayout";
 export { FluidCursor } from "./FluidCursor";
+export { AtmosphericBackground } from "./AtmosphericBackground";
 

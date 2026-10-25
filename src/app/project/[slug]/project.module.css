@@ -1,7 +1,9 @@
 .projectDetail {
-  background-color: #08090b;
+  background-color: transparent;
   min-height: 100vh;
   padding-top: 90px;
+  position: relative;
+  z-index: 1;
 }
 
 .headerHud {

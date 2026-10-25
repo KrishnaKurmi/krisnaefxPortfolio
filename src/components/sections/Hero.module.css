@@ -6,7 +6,7 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  background-color: #0a0b0d;
+  background-color: transparent;
   color: var(--color-text-primary);
   padding: 100px var(--spacing-xl) 40px var(--spacing-xl);
 }

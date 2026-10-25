@@ -1,13 +1,29 @@
 .main {
-  background-color: #0a0b0d;
+  background-color: transparent;
+  position: relative;
+  z-index: 1;
 }
 
 /* About Section */
 .aboutSection {
-  background-color: #0f1116;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  background: linear-gradient(180deg, rgba(14, 16, 22, 0.7) 0%, rgba(8, 10, 13, 0.85) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: 120px 0;
+  overflow: hidden;
+}
+
+.aboutSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  width: 70%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.35), transparent);
 }
 
 .aboutGrid {

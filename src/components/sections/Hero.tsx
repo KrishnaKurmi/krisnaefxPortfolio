@@ -66,7 +66,7 @@ export function Hero() {
       <div className={styles.hudTop}>
         <div className={styles.statusPill}>
           <span className={styles.pulseDot} />
-          <span>AVAILABLE FOR SELECTIVE COMMISSIONS</span>
+          <span>AVAILABLE</span>
         </div>
         <div className={styles.timecodePill}>
           <span className={styles.tcLabel}>TC</span>
